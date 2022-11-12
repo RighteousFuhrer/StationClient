@@ -4,14 +4,14 @@ export default class Desk {
     this.y = y;
     this.tileSize = tileSize;
     this.image = new Image();
-    this.image.src = require("../images/desk.png");
+    this.image.src = require("../images/booth.png");
 
   }
 
 
   draw(ctx) {
 
-    ctx.drawImage(this.image, this.x, this.y, this.tileSize, this.tileSize);
+    ctx.drawImage(this.image, this.x-this.tileSize/7, this.y-this.tileSize/2, this.tileSize*1.3, this.tileSize*1.3);
 
   }
 }

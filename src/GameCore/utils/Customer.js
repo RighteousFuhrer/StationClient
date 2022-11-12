@@ -2,7 +2,15 @@ import MovingDirection from "./MovingDirection.js";
 import { calcNextCoordinate } from "./PathFinder.js";
 
 export default class Customer {
-  constructor(currentPoint, destinationPoint, tileSize, type, id, tileMap,gameSpeed) {
+  constructor(
+    currentPoint,
+    destinationPoint,
+    tileSize,
+    type,
+    id,
+    tileMap,
+    gameSpeed
+  ) {
     this.id = id;
     this.currentPoint = currentPoint;
     this.destinationPoint = destinationPoint;
@@ -13,22 +21,22 @@ export default class Customer {
     switch (type) {
       case 0: {
         this.image.src = require("../images/dude.png");
-        this.velocity = 1*gameSpeed;
+        this.velocity = 1 * gameSpeed;
         break;
       }
       case 1: {
         this.image.src = require("../images/woman.png");
-        this.velocity = 0.75*gameSpeed;
+        this.velocity = 0.75 * gameSpeed;
         break;
       }
       case 2: {
         this.image.src = require("../images/criple.png");
-        this.velocity = .5*gameSpeed;
+        this.velocity = 0.5 * gameSpeed;
         break;
       }
-      default : {
+      default: {
         this.image.src = require("../images/dude.png");
-        this.velocity = 1*gameSpeed;
+        this.velocity = 1 * gameSpeed;
         break;
       }
     }
@@ -38,14 +46,13 @@ export default class Customer {
 
   update(destinationPoint) {
     this.destinationPoint = destinationPoint;
-    
   }
 
-  draw(ctx, pause) {
+  drawModel(ctx, pause) {
     if (!pause) {
       this.#move();
     }
-    
+
     const size = this.tileSize / 4;
 
     ctx.drawImage(
@@ -55,11 +62,6 @@ export default class Customer {
       this.tileSize,
       this.tileSize
     );
-    
-    ctx.font = "14px serif";
-    ctx.textAlign = "center";
-    ctx.fillStyle = "#FFD700"
-    ctx.fillText(String(this.id), this.currentPoint.x + 2*size,this.currentPoint.y - size*1.5);
 
     // ctx.drawImage(
     //   this.pacmanImages[this.pacmanImageIndex],
@@ -69,15 +71,26 @@ export default class Customer {
     //   this.tileSize
     // );
   }
-  drawId(){
-
+  drawId(ctx) {
+    const size = this.tileSize / 4;
+    ctx.font = "14px serif";
+    ctx.textAlign = "center";
+    ctx.fillStyle = "#FFD700";
+    ctx.fillText(
+      String(this.id),
+      this.currentPoint.x + 2 * size,
+      this.currentPoint.y - size * 1.5
+    );
   }
 
   #move() {
-    if (this.currentPoint.x === this.destinationPoint.x && this.currentPoint.y === this.destinationPoint.y) {
+    if (
+      this.currentPoint.x === this.destinationPoint.x &&
+      this.currentPoint.y === this.destinationPoint.y
+    ) {
       this.update({
-        x: Math.round(Math.random() * 13 + 1)*this.tileSize,
-        y: Math.round(Math.random() * 13 + 1)*this.tileSize,
+        x: Math.round(Math.random() * 13 + 1) * this.tileSize,
+        y: Math.round(Math.random() * 13 + 1) * this.tileSize,
       });
     }
 

@@ -23,7 +23,10 @@ export default function GameCore({ tileMap, tileSize, gameSpeed }: GameParams) {
   const [pause, setPause] = useState(false);
 
   useEffect(() => {
-    setDesks([...tileMap.getDesks()]);
+    let res = tileMap.getDesks();
+    if (res.length > 0) {
+      setDesks([...res]);
+    }
     setDoors([...tileMap.getDoors()]);
     tileMap.setCanvasSize(canvas.current);
   }, []);
@@ -84,7 +87,7 @@ export default function GameCore({ tileMap, tileSize, gameSpeed }: GameParams) {
 
       if (ran > 92 && customers.length <= 15) {
         _customers.push(createRandomCustomer());
-      } else if (ran < 3) {
+      } else if (ran < 2) {
         _customers.splice(
           Math.round(Math.random() * (_customers.length - 1)),
           1
@@ -93,15 +96,16 @@ export default function GameCore({ tileMap, tileSize, gameSpeed }: GameParams) {
     }
 
     updateCustomers(_customers);
-    draw();
+    drawFrame();
   };
 
-  const draw = () => {
+  const drawFrame = () => {
     if (canvas.current) {
       const ctx = canvas.current.getContext("2d");
       tileMap.draw(ctx);
       desks.forEach((desk) => desk.draw(ctx));
-      customers.forEach((customer) => customer.draw(ctx, pause));
+      customers.forEach((customer) => customer.drawModel(ctx, pause));
+      customers.forEach((customer) => customer.drawId(ctx));
     }
   };
 
