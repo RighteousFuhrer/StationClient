@@ -2,7 +2,7 @@ import MovingDirection from "./MovingDirection.js";
 import { calcNextCoordinate } from "./PathFinder.js";
 
 export default class Customer {
-  constructor(currentPoint, destinationPoint, tileSize, type, id, tileMap) {
+  constructor(currentPoint, destinationPoint, tileSize, type, id, tileMap,gameSpeed) {
     this.id = id;
     this.currentPoint = currentPoint;
     this.destinationPoint = destinationPoint;
@@ -13,17 +13,22 @@ export default class Customer {
     switch (type) {
       case 0: {
         this.image.src = require("../images/dude.png");
-        this.velocity = 2;
+        this.velocity = 1*gameSpeed;
         break;
       }
       case 1: {
         this.image.src = require("../images/woman.png");
-        this.velocity = 1.6;
+        this.velocity = 0.75*gameSpeed;
         break;
       }
       case 2: {
         this.image.src = require("../images/criple.png");
-        this.velocity = 1.35;
+        this.velocity = .5*gameSpeed;
+        break;
+      }
+      default : {
+        this.image.src = require("../images/dude.png");
+        this.velocity = 1*gameSpeed;
         break;
       }
     }

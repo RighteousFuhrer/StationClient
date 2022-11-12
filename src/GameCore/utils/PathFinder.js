@@ -23,7 +23,7 @@ export const calcNextCoordinate = (tileMap, pointStart, pointEnd, velocity) => {
   }
 
   return {
-    x: Math.round(pointStart.x + (difX * velocity) / distance),
-    y: Math.round(pointStart.y + (difY * velocity) / distance),
+    x: (pointStart.x + (difX * velocity) / distance),
+    y: (pointStart.y + (difY * velocity) / distance),
   };
 };

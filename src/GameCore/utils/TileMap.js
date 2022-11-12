@@ -163,6 +163,8 @@ export default class TileMap {
           row = nextRow / this.tileSize;
           column = x / this.tileSize;
           break;
+        default:
+          break;
       }
       const tile = this.map[row][column];
       if (tile === 1) {

@@ -11,9 +11,10 @@ interface Point {
 interface GameParams {
   tileMap: TileMap;
   tileSize: number;
+  gameSpeed: number;
 }
 
-export default function GameCore({tileMap, tileSize}:GameParams) {
+export default function GameCore({ tileMap, tileSize, gameSpeed }: GameParams) {
   const canvas = useRef<HTMLCanvasElement>(null);
 
   const [customers, setCustomers] = useState<Customer[]>([]);
@@ -22,7 +23,6 @@ export default function GameCore({tileMap, tileSize}:GameParams) {
   const [pause, setPause] = useState(false);
 
   useEffect(() => {
-    console.log("effect");
     setDesks([...tileMap.getDesks()]);
     setDoors([...tileMap.getDoors()]);
     tileMap.setCanvasSize(canvas.current);
@@ -65,7 +65,15 @@ export default function GameCore({tileMap, tileSize}:GameParams) {
       type = 2;
     }
 
-    return new Customer(start, destinationPoint, tileSize, type, id, tileMap);
+    return new Customer(
+      start,
+      destinationPoint,
+      tileSize,
+      type,
+      id,
+      tileMap,
+      gameSpeed
+    );
   };
 
   const gameLoop = () => {
@@ -97,9 +105,7 @@ export default function GameCore({tileMap, tileSize}:GameParams) {
     }
   };
 
+  setTimeout(gameLoop, 1000 / 150);
 
-  
-  setTimeout(gameLoop, 1000 / 50);
-
-  return <canvas ref={canvas}/>;
+  return <canvas ref={canvas} />;
 }
