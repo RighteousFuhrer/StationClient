@@ -52,7 +52,7 @@ const SettingsBoard = ({ doorsCoountProps, boothCoountProps }: Props) => {
 
   }, [doorsCoountProps, boothCoountProps]);
 
-  console.log(doorsCoountProps, doorCount);
+  //console.log(doorsCoountProps, doorCount);
 
   const imageValidate = (i: number, j: number) => {
     if (deskMap[i][j] === 2) {

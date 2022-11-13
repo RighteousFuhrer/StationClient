@@ -8,7 +8,7 @@ import Settings from "./Page/Settings";
 function App() {
   const tileSize = 44;
   const tileMap = new TileMap(tileSize);
-  const gameSpeed = 0.6;
+  const gameSpeed = 0.7;
   return (
     <>
       <BrowserRouter>

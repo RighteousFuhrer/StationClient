@@ -1,5 +1,6 @@
 import MovingDirection from "./MovingDirection.js";
 import Desk from "./Desk.js";
+import Door from "./Door.js";
 
 export default class TileMap {
   constructor(tileSize) {
@@ -94,10 +95,8 @@ export default class TileMap {
       for (let column = 0; column < this.map[row].length; column++) {
         let tile = this.map[row][column];
         if (tile === 2) {
-          doors.push({
-            x: column * this.tileSize,
-            y: row * this.tileSize,
-          });
+          this.map[row][column] = 0;
+          doors.push(new Door(column * this.tileSize, row * this.tileSize, this.tileSize));
         }
       }
     }

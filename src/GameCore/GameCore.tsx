@@ -3,6 +3,7 @@ import Customer from "./utils/Customer";
 import TileMap from "./utils/TileMap";
 import Desk from "./utils/Desk";
 import "./GameCore.css";
+import Door from "./utils/Door";
 
 interface Point {
   x: number;
@@ -16,19 +17,38 @@ interface GameParams {
 
 export default function GameCore({ tileMap, tileSize, gameSpeed }: GameParams) {
   const canvas = useRef<HTMLCanvasElement>(null);
-
+  const request = useRef<any>(null);
+  const frame = useRef<any>(null);
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [desks, setDesks] = useState<Desk[]>([]);
-  const [doors, setDoors] = useState<Point[]>([]);
+  const [doors, setDoors] = useState<Door[]>([]);
   const [pause, setPause] = useState(false);
 
+  
+
   useEffect(() => {
+    request.current = setInterval(() => console.log("requested data"), 1000);
     let res = tileMap.getDesks();
+
     if (res.length > 0) {
       setDesks([...res]);
     }
-    setDoors([...tileMap.getDoors()]);
+
+    res = tileMap.getDoors();
+    
+    if (res.length > 0) {
+      setDoors([...res]);
+    }
     tileMap.setCanvasSize(canvas.current);
+
+    return () => {
+      if (request.current) {
+        clearTimeout(request.current);
+      }
+      if (frame.current) {
+        clearTimeout(frame.current);
+      }
+    };
   }, []);
 
   const updateCustomers = (_customers: Customer[]) => {
@@ -98,18 +118,20 @@ export default function GameCore({ tileMap, tileSize, gameSpeed }: GameParams) {
     updateCustomers(_customers);
     drawFrame();
   };
+  
+  frame.current = setTimeout(gameLoop, 1000 / 150);
+  
 
   const drawFrame = () => {
     if (canvas.current) {
       const ctx = canvas.current.getContext("2d");
       tileMap.draw(ctx);
       desks.forEach((desk) => desk.draw(ctx));
+      doors.forEach((door) => door.draw(ctx));
       customers.forEach((customer) => customer.drawModel(ctx, pause));
       customers.forEach((customer) => customer.drawId(ctx));
     }
   };
-
-  setTimeout(gameLoop, 1000 / 150);
 
   return <canvas ref={canvas} />;
 }
