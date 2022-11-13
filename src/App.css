@@ -1,0 +1,111 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+#gameCanvas {
+  box-shadow: 10px 10px 20px black;
+}
+h2 {
+  text-align: center;
+  color: white;
+}
+body {
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  height: 100vh;
+
+  font-family: comic sans MS;
+  color: lightgrey;
+
+  background: linear-gradient(
+    0deg,
+    rgb(17, 51, 161) 0%,
+    rgb(136, 34, 195) 100%
+  );
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  box-shadow: 10px 10px 20px black;
+  padding: 20px;
+}
+
+form > span {
+  margin: 5px 0;
+}
+
+input {
+  font-family: comic sans MS;
+  margin-left: 10px;
+  width: 100px;
+  border: 1px solid rgb(17, 51, 161);
+  border-radius: 5px;
+}
+
+.selectStrategy {
+  margin-left: 10px;
+  border: 1px solid rgb(17, 51, 161);
+  border-radius: 5px;
+  font-family: comic sans MS;
+  width: 100px;
+}
+
+.btnSaveSettings{
+  font-family: comic sans MS;
+  border-radius: 5px;
+  border: 1px solid rgb(17, 51, 161);
+
+  margin: 30px;
+  padding: 10px;
+  background-color: white;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.btnSaveSettings:hover{
+  background-color: rgb(136, 34, 195);
+  color: white;
+}
+.settingPage{
+  width: 100%;
+  overflow:auto;
+  height: 100%;
+}
