@@ -1,14 +1,18 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+
+import {ApiProvider} from "@reduxjs/toolkit/query/react"
+import { apiSlice } from "./GameCore/api/apiGameProps";
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+  document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <App />
+    <ApiProvider api={apiSlice}>
+      <App />
+    </ApiProvider>
   </React.StrictMode>
 );
-

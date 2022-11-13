@@ -4,6 +4,7 @@ import TileMap from "./utils/TileMap";
 import Desk from "./utils/Desk";
 import "./GameCore.css";
 import Door from "./utils/Door";
+import { useGetGamePropsQuery } from "./api/apiGameProps";
 
 interface Point {
   x: number;
@@ -17,17 +18,17 @@ interface GameParams {
 
 export default function GameCore({ tileMap, tileSize, gameSpeed }: GameParams) {
   const canvas = useRef<HTMLCanvasElement>(null);
-  const request = useRef<any>(null);
   const frame = useRef<any>(null);
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [desks, setDesks] = useState<Desk[]>([]);
   const [doors, setDoors] = useState<Door[]>([]);
   const [pause, setPause] = useState(false);
 
-  
+  const { data, status, error, refetch } = useGetGamePropsQuery(null, {
+    pollingInterval: 500,
+  });
 
   useEffect(() => {
-    request.current = setInterval(() => console.log("requested data"), 1000);
     let res = tileMap.getDesks();
 
     if (res.length > 0) {
@@ -35,21 +36,22 @@ export default function GameCore({ tileMap, tileSize, gameSpeed }: GameParams) {
     }
 
     res = tileMap.getDoors();
-    
+
     if (res.length > 0) {
       setDoors([...res]);
     }
     tileMap.setCanvasSize(canvas.current);
 
     return () => {
-      if (request.current) {
-        clearTimeout(request.current);
-      }
       if (frame.current) {
         clearTimeout(frame.current);
       }
     };
   }, []);
+
+  useEffect(() => {
+    console.log(data);
+  }, data);
 
   const updateCustomers = (_customers: Customer[]) => {
     let newCustomers: Customer[] = [];
@@ -118,9 +120,8 @@ export default function GameCore({ tileMap, tileSize, gameSpeed }: GameParams) {
     updateCustomers(_customers);
     drawFrame();
   };
-  
-  frame.current = setTimeout(gameLoop, 1000 / 150);
-  
+
+  frame.current = setTimeout(gameLoop, 1000 / 90);
 
   const drawFrame = () => {
     if (canvas.current) {
