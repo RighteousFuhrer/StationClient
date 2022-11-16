@@ -6,6 +6,7 @@ import "./GameCore.css";
 import Door from "./utils/Door";
 import { useGetGamePropsQuery } from "./api/apiGameProps";
 import Core from "./utils/Core";
+import ReserveBooth from "./utils/ReserveBooth";
 
 interface Point {
   x: number;
@@ -20,16 +21,16 @@ interface GameParams {
 
 export default function GameCore({ tileMap, tileSize, gameSpeed }: GameParams) {
   const canvas = useRef<HTMLCanvasElement>(null);
-  const frame = useRef<any>(null);
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [desks, setDesks] = useState<Desk[]>([]);
   const [doors, setDoors] = useState<Door[]>([]);
   const [pause, setPause] = useState(false);
+  const [reserveBooth, setReserveBooth] = useState<any>(null);
   const [updateState, setUpdateState] = useState(false);
   const core = useRef<Core>(new Core());
 
   const { data, status, error, refetch } = useGetGamePropsQuery(null, {
-    pollingInterval: 2000,
+    pollingInterval: 1000,
     skip: pause,
   });
 
@@ -96,27 +97,25 @@ export default function GameCore({ tileMap, tileSize, gameSpeed }: GameParams) {
 
   const updateGameProps = () => {
     if (data) {
-      if (data.people) {
-        updateCustomers(
-          data.people.map((p: any) => {
-            return new Customer(
-              {
-                x: p.initialPosition.x * tileSize,
-                y: p.initialPosition.y * tileSize,
-              },
-              {
-                x: p.targetPosition.x * tileSize,
-                y: p.targetPosition.y * tileSize,
-              },
-              tileSize,
-              p.status,
-              p.id,
-              tileMap,
-              gameSpeed
-            );
-          })
-        );
-      }
+      updateCustomers(
+        data.people.map((p: any) => {
+          return new Customer(
+            {
+              x: p.initialPosition.x * tileSize,
+              y: p.initialPosition.y * tileSize,
+            },
+            {
+              x: p.targetPosition.x * tileSize,
+              y: p.targetPosition.y * tileSize,
+            },
+            tileSize,
+            p.status,
+            p.id,
+            tileMap,
+            gameSpeed
+          );
+        })
+      );
       updateBooths(
         data.offices.map((o: any) => {
           return new Desk(
@@ -127,12 +126,13 @@ export default function GameCore({ tileMap, tileSize, gameSpeed }: GameParams) {
           );
         })
       );
+      //setReserveBooth(data.)
     }
   };
 
   const gameLoop = () => {
-    customers.forEach((element) =>{ 
-      element.move(pause)
+    customers.forEach((element) => {
+      element.move(pause);
       setUpdateState(!updateState);
     });
     drawFrame();
@@ -149,7 +149,7 @@ export default function GameCore({ tileMap, tileSize, gameSpeed }: GameParams) {
     }
   };
 
-  setTimeout(gameLoop, 1000/180);
+  setTimeout(gameLoop, 1000 / 180);
 
   return (
     <div

@@ -25,12 +25,12 @@ export default class Customer {
       }
       case "OldBoy": {
         this.image.src = require("../images/woman.png");
-        this.velocity = 0.75 * gameSpeed;
+        this.velocity = 0.8 * gameSpeed;
         break;
       }
       case "Disabled": {
         this.image.src = require("../images/criple.png");
-        this.velocity = 0.5 * gameSpeed;
+        this.velocity = 0.6 * gameSpeed;
         break;
       }
       default: {

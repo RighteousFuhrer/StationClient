@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState, useEffect } from "react";
 
 import { useNavigate } from "react-router-dom";
@@ -5,14 +6,12 @@ import { useNavigate } from "react-router-dom";
 import BoardSettings from "../components/SettingsBoard";
 import { ISetiingsProps } from "../models/ISettings";
 
-
-
 const Settings = () => {
   const [settingsData, setSettingsData] = useState<ISetiingsProps>({
     countCashRegister: 2,
     countExits: 2,
     serviseTime: 2,
-    stategy: "true",
+    stategy: "false",
   });
   const navigate = useNavigate();
 
@@ -31,16 +30,13 @@ const Settings = () => {
     }
   };
 
-  const setSettingsDataHandler = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
 
-    navigate("/game");
-  };
+
 
   return (
     <div className="settingPage">
       <h2>Settings</h2>
-      <form onSubmit={setSettingsDataHandler}>
+      <form>
         <span>
           Кількість кас:
           <input
@@ -72,6 +68,7 @@ const Settings = () => {
             type="number"
             min="2"
             max="6"
+            name="processingTime"
             value={settingsData.serviseTime}
             onChange={(e) =>
               verifiedMaxNumber(e.target.value, 6, "serviseTime", 2)
@@ -87,15 +84,17 @@ const Settings = () => {
               setSettingsData({ ...settingsData, stategy: e.target.value })
             }
           >
-            <option value={"true"}>Рівномірні</option>
-            <option value={"false"}>Випадкові</option>
+            <option value={"false"}>Рівномірні</option>
+            <option value={"true"}>Випадкові</option>
           </select>
         </span>
-        <BoardSettings  doorsCoountProps = {settingsData.countExits}
-    boothCoountProps = {settingsData.countCashRegister} />
-        <button type="submit" className="btnSaveSettings">
-          Save settings
-        </button>
+        <BoardSettings
+        stategy = {settingsData.stategy}
+        serviseTime = {settingsData.serviseTime}
+          doorsCoountProps={settingsData.countExits}
+          boothCoountProps={settingsData.countCashRegister}
+        />
+       
       </form>
     </div>
   );
