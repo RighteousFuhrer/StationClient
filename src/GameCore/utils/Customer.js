@@ -17,19 +17,18 @@ export default class Customer {
     this.tileMap = tileMap;
     this.tileSize = tileSize;
     this.image = new Image();
-
     switch (type) {
-      case 0: {
+      case "Usual": {
         this.image.src = require("../images/dude.png");
         this.velocity = 1 * gameSpeed;
         break;
       }
-      case 1: {
+      case "OldBoy": {
         this.image.src = require("../images/woman.png");
         this.velocity = 0.75 * gameSpeed;
         break;
       }
-      case 2: {
+      case "Disabled": {
         this.image.src = require("../images/criple.png");
         this.velocity = 0.5 * gameSpeed;
         break;
@@ -40,18 +39,16 @@ export default class Customer {
         break;
       }
     }
-    // this.currentMovingDirection = null;
-    // this.requestedMovingDirection = null;
   }
 
   update(destinationPoint) {
     this.destinationPoint = destinationPoint;
   }
 
-  drawModel(ctx, pause) {
-    if (!pause) {
-      this.#move();
-    }
+  drawModel(ctx) {
+    // if (!pause) {
+    //   this.#move();
+    // }
 
     const size = this.tileSize / 4;
 
@@ -62,14 +59,6 @@ export default class Customer {
       this.tileSize,
       this.tileSize
     );
-
-    // ctx.drawImage(
-    //   this.pacmanImages[this.pacmanImageIndex],
-    //   this.x,
-    //   this.y,
-    //   this.tileSize,
-    //   this.tileSize
-    // );
   }
   drawId(ctx) {
     const size = this.tileSize / 4;
@@ -83,25 +72,17 @@ export default class Customer {
     );
   }
 
-  #move() {
-    if (
-      this.currentPoint.x === this.destinationPoint.x &&
-      this.currentPoint.y === this.destinationPoint.y
-    ) {
-      this.update({
-        x: Math.round(Math.random() * 13 + 1) * this.tileSize,
-        y: Math.round(Math.random() * 13 + 1) * this.tileSize,
-      });
+  move(pause) {
+    if (!pause) {
+      const next = calcNextCoordinate(
+        this.tileMap,
+        { x: this.currentPoint.x, y: this.currentPoint.y },
+        { x: this.destinationPoint.x, y: this.destinationPoint.y },
+        this.velocity
+      );
+
+      this.currentPoint.x = next.x;
+      this.currentPoint.y = next.y;
     }
-
-    const next = calcNextCoordinate(
-      this.tileMap,
-      { x: this.currentPoint.x, y: this.currentPoint.y },
-      { x: this.destinationPoint.x, y: this.destinationPoint.y },
-      this.velocity
-    );
-
-    this.currentPoint.x = next.x;
-    this.currentPoint.y = next.y;
   }
 }

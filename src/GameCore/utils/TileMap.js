@@ -21,14 +21,14 @@ export default class TileMap {
   //4 - cutomer
   map = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 0, 3, 0, 3, 0, 3, 0, 3, 0, 0, 0, 0, 0, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
     [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
@@ -48,16 +48,15 @@ export default class TileMap {
         } else if (tile === 2) {
           this.#drawDoor(ctx, column, row, this.tileSize);
         }
-
-        // ctx.strokeStyle = "yellow";
-        // ctx.strokeRect(
-        //   column * this.tileSize,
-        //   row * this.tileSize,
-        //   this.tileSize,
-        //   this.tileSize
-        // );
       }
     }
+
+    this.savedState = ctx.getImageData(
+      0,
+      0,
+      ctx.canvas.width,
+      ctx.canvas.height
+    );
   }
 
   #drawFloor(ctx, column, row, size) {
@@ -96,7 +95,9 @@ export default class TileMap {
         let tile = this.map[row][column];
         if (tile === 2) {
           this.map[row][column] = 0;
-          doors.push(new Door(column * this.tileSize, row * this.tileSize, this.tileSize));
+          doors.push(
+            new Door(column * this.tileSize, row * this.tileSize, this.tileSize)
+          );
         }
       }
     }

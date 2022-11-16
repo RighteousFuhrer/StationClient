@@ -21,7 +21,6 @@ export const calcNextCoordinate = (tileMap, pointStart, pointEnd, velocity) => {
   if (distance < velocity) {
     return { x: pointEnd.x, y: pointEnd.y };
   }
-
   return {
     x: (pointStart.x + (difX * velocity) / distance),
     y: (pointStart.y + (difY * velocity) / distance),
