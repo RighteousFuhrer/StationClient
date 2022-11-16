@@ -113,7 +113,7 @@ const SettingsBoard = ({
         resultMap[i][j] = 4;
         setDeskmap(resultMap);
         setReserveTicketOffice((prev) => prev - 1);
-        setListReserveTicketOffice({ x: i, y: j });
+        setListReserveTicketOffice({ x: j, y: i });
       }
     }
     if ((i === 0 || i === 14) && j !== 0 && j !== 14) {
@@ -172,14 +172,15 @@ const SettingsBoard = ({
     const response = await axios.post(
       "http://localhost:8080/api/v1/stationmanager",
       JSON.stringify({
-        entrances: listOffices,
-        ticketOffices: listStots,
-        processingTime: serviseTime * 1000,
-        reserveTicketOffice: listReserveTicketOffice,
+        entrances: listStots,
+        ticketOffices: listOffices,
+        processingTime: serviseTime,
+        reservedTicketOffice: listReserveTicketOffice,
         isRandomSpawnTime: stategy === "true",
       }),
       { headers: { "Content-Type": "application/json" } }
     );
+    navigate('/game');
   };
 
   // console.log(

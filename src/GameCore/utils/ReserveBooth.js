@@ -1,10 +1,11 @@
 export default class Desk {
-  constructor(x, y, tileSize) {
+  constructor(x, y, tileSize,isManaging) {
     this.x = x;
     this.y = y;
     this.tileSize = tileSize;
+    this.isManaging = isManaging;
     this.image = new Image();
-    this.image.src = require("../images/reservBooth.png");
+    this.image.src = require("../images/reservBooth.jpg");
   }
 
   draw(ctx) {

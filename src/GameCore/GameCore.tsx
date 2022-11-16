@@ -39,11 +39,11 @@ export default function GameCore({ tileMap, tileSize, gameSpeed }: GameParams) {
     //   core.current.start(gameLoop, 100);
     // }
 
-    let newDoors = tileMap.getDoors();
+    // let newDoors = tileMap.getDoors();
 
-    if (newDoors.length > 0) {
-      setDoors([...newDoors]);
-    }
+    // if (newDoors.length > 0) {
+    //   setDoors([...newDoors]);
+    // }
 
     tileMap.setCanvasSize(canvas.current);
     if (canvas.current) {
@@ -54,7 +54,6 @@ export default function GameCore({ tileMap, tileSize, gameSpeed }: GameParams) {
   }, []);
 
   useEffect(() => {
-    //drawFrame();
   }, [customers, desks, doors]);
 
   useEffect(() => {
@@ -95,6 +94,23 @@ export default function GameCore({ tileMap, tileSize, gameSpeed }: GameParams) {
     setDesks([...booths]);
   };
 
+  const updateDoors = (_doors: Door[]) => {
+    let newDoors: Door[] = [];
+
+    _doors.forEach((element) => {
+      const door = desks.filter(
+        (e) => e.x === element.x && e.y === element.y
+      )[0];
+      if (door) {
+        newDoors.push(door);
+      } else {
+        newDoors.push(element);
+      }
+    });
+
+    setDoors([...newDoors]);
+  };
+
   const updateGameProps = () => {
     if (data) {
       updateCustomers(
@@ -126,7 +142,24 @@ export default function GameCore({ tileMap, tileSize, gameSpeed }: GameParams) {
           );
         })
       );
-      //setReserveBooth(data.)
+      updateDoors(
+        data.spots.map((o: any) => {
+          return new Door(
+            o.position.x * tileSize,
+            o.position.y * tileSize,
+            tileSize
+          );
+        })
+      );
+      if (data.reservedTicketOffice)
+        setReserveBooth(
+          new ReserveBooth(
+            data.reservedTicketOffice.position.x,
+            data.reservedTicketOffice.position.y,
+            tileSize,
+            data.reservedTicketOffice.isManaging
+          )
+        );
     }
   };
 
