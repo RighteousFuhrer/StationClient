@@ -5,7 +5,7 @@ import door from "../GameCore/images/door.png";
 import wall from "../GameCore/images/wall.png";
 import booth from "../GameCore/images/booth.png";
 import floor from "../GameCore/images/floor.png";
-import reservBooth from "../GameCore/images/reservBooth.jpg";
+import reservBooth from "../GameCore/images/reservBooth.png";
 
 import { ISetiingsProps } from "../models/ISettings";
 import axios from "axios";

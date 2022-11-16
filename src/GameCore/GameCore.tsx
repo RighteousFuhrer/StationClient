@@ -7,6 +7,7 @@ import Door from "./utils/Door";
 import { useGetGamePropsQuery } from "./api/apiGameProps";
 import Core from "./utils/Core";
 import ReserveBooth from "./utils/ReserveBooth";
+import axios from "axios";
 
 interface Point {
   x: number;
@@ -53,8 +54,7 @@ export default function GameCore({ tileMap, tileSize, gameSpeed }: GameParams) {
     return core.current.stop();
   }, []);
 
-  useEffect(() => {
-  }, [customers, desks, doors]);
+  useEffect(() => {}, [customers, desks, doors]);
 
   useEffect(() => {
     updateGameProps();
@@ -98,7 +98,7 @@ export default function GameCore({ tileMap, tileSize, gameSpeed }: GameParams) {
     let newDoors: Door[] = [];
 
     _doors.forEach((element) => {
-      const door = desks.filter(
+      const door = doors.filter(
         (e) => e.x === element.x && e.y === element.y
       )[0];
       if (door) {
@@ -151,12 +151,11 @@ export default function GameCore({ tileMap, tileSize, gameSpeed }: GameParams) {
           );
         })
       );
-      console.log(data.reservedTicketOffice)
       if (data.reservedTicketOffice)
         setReserveBooth(
           new ReserveBooth(
-            data.reservedTicketOffice.position.x*tileSize,
-            data.reservedTicketOffice.position.y*tileSize,
+            data.reservedTicketOffice.position.x * tileSize,
+            data.reservedTicketOffice.position.y * tileSize,
             tileSize,
             data.reservedTicketOffice.isManaging
           )
@@ -178,12 +177,20 @@ export default function GameCore({ tileMap, tileSize, gameSpeed }: GameParams) {
       tileMap.draw(canvas.current.getContext("2d"));
       desks.forEach((desk) => desk.draw(ctx));
       doors.forEach((door) => door.draw(ctx));
-      if(reserveBooth) {
-        reserveBooth.draw(ctx)
+      if (reserveBooth) {
+        reserveBooth.draw(ctx);
       }
       customers.forEach((customer) => customer.drawModel(ctx));
       customers.forEach((customer) => customer.drawId(ctx));
     }
+  };
+
+  const handlePause = async () => {
+    axios
+      .post("http://localhost:8080/api/v1/stationmanager/turnOffStationSimulator")
+      .then(() => {
+        setPause(!pause);
+      });
   };
 
   setTimeout(gameLoop, 1000 / 180);
@@ -193,7 +200,7 @@ export default function GameCore({ tileMap, tileSize, gameSpeed }: GameParams) {
       style={{ display: "flex", flexDirection: "column", marginTop: "2rem" }}
     >
       <canvas ref={canvas} />
-      <button className="btnSaveSettings" onClick={() => setPause(!pause)}>
+      <button className="btnSaveSettings" onClick={handlePause}>
         {pause ? "Unpause" : "Pause"}
       </button>
     </div>

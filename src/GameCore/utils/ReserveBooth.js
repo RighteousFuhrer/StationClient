@@ -5,7 +5,7 @@ export default class Desk {
     this.tileSize = tileSize;
     this.isManaging = isManaging;
     this.image = new Image();
-    this.image.src = require("../images/reservBooth.jpg");
+    this.image.src = require("../images/reservBooth.png");
   }
 
   draw(ctx) {
