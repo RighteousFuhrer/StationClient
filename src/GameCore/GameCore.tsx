@@ -151,11 +151,12 @@ export default function GameCore({ tileMap, tileSize, gameSpeed }: GameParams) {
           );
         })
       );
+      console.log(data.reservedTicketOffice)
       if (data.reservedTicketOffice)
         setReserveBooth(
           new ReserveBooth(
-            data.reservedTicketOffice.position.x,
-            data.reservedTicketOffice.position.y,
+            data.reservedTicketOffice.position.x*tileSize,
+            data.reservedTicketOffice.position.y*tileSize,
             tileSize,
             data.reservedTicketOffice.isManaging
           )
@@ -177,6 +178,9 @@ export default function GameCore({ tileMap, tileSize, gameSpeed }: GameParams) {
       tileMap.draw(canvas.current.getContext("2d"));
       desks.forEach((desk) => desk.draw(ctx));
       doors.forEach((door) => door.draw(ctx));
+      if(reserveBooth) {
+        reserveBooth.draw(ctx)
+      }
       customers.forEach((customer) => customer.drawModel(ctx));
       customers.forEach((customer) => customer.drawId(ctx));
     }
